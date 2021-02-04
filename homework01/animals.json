@@ -1,0 +1,144 @@
+{
+  "animals": [
+    {
+      "head": "lion",
+      "body": "colt-starfish",
+      "arms": 10,
+      "legs": 4,
+      "tail": 14
+    },
+    {
+      "head": "raven",
+      "body": "beagle-pug",
+      "arms": 2,
+      "legs": 4,
+      "tail": 6
+    },
+    {
+      "head": "lion",
+      "body": "serval-yeti",
+      "arms": 2,
+      "legs": 8,
+      "tail": 10
+    },
+    {
+      "head": "bull",
+      "body": "sailfish-swine",
+      "arms": 5,
+      "legs": 6,
+      "tail": 11
+    },
+    {
+      "head": "bunny",
+      "body": "ibex-hookworm",
+      "arms": 3,
+      "legs": 5,
+      "tail": 8
+    },
+    {
+      "head": "bull",
+      "body": "lemming-gibbon",
+      "arms": 3,
+      "legs": 7,
+      "tail": 10
+    },
+    {
+      "head": "bunny",
+      "body": "grouse-louse",
+      "arms": 3,
+      "legs": 7,
+      "tail": 10
+    },
+    {
+      "head": "snake",
+      "body": "bluebird-bee",
+      "arms": 5,
+      "legs": 5,
+      "tail": 10
+    },
+    {
+      "head": "bull",
+      "body": "hornet-kid",
+      "arms": 10,
+      "legs": 9,
+      "tail": 19
+    },
+    {
+      "head": "bunny",
+      "body": "cub-porpoise",
+      "arms": 5,
+      "legs": 8,
+      "tail": 13
+    },
+    {
+      "head": "snake",
+      "body": "werewolf-crappie",
+      "arms": 10,
+      "legs": 4,
+      "tail": 14
+    },
+    {
+      "head": "bunny",
+      "body": "vervet-pig",
+      "arms": 2,
+      "legs": 7,
+      "tail": 9
+    },
+    {
+      "head": "bull",
+      "body": "shepherd-man",
+      "arms": 3,
+      "legs": 4,
+      "tail": 7
+    },
+    {
+      "head": "bunny",
+      "body": "shrew-rodent",
+      "arms": 6,
+      "legs": 3,
+      "tail": 9
+    },
+    {
+      "head": "lion",
+      "body": "jackass-kitten",
+      "arms": 4,
+      "legs": 6,
+      "tail": 10
+    },
+    {
+      "head": "bull",
+      "body": "bedbug-squid",
+      "arms": 8,
+      "legs": 7,
+      "tail": 15
+    },
+    {
+      "head": "raven",
+      "body": "monarch-grubworm",
+      "arms": 9,
+      "legs": 12,
+      "tail": 21
+    },
+    {
+      "head": "snake",
+      "body": "kodiak-camel",
+      "arms": 7,
+      "legs": 9,
+      "tail": 16
+    },
+    {
+      "head": "bull",
+      "body": "dodo-sheep",
+      "arms": 3,
+      "legs": 11,
+      "tail": 14
+    },
+    {
+      "head": "snake",
+      "body": "grackle-pika",
+      "arms": 5,
+      "legs": 8,
+      "tail": 13
+    }
+  ]
+}
