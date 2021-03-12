@@ -6,7 +6,7 @@ head_list = ['snake', 'bull', 'lion', 'raven', 'bunny']
 
 def check_head(head):
 	if head not in head_list:
-		raise argparse.ArgumentTypeError('%s is not a valid head shape.' % head)
+		raise argparse.ArgumentTypeError('%s is not a valid head shape.'  % head)
 	return(head)
 
 def check_positive(value):
