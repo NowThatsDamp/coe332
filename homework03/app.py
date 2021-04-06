@@ -5,7 +5,7 @@ app = Flask(__name__)
 
 @app.route('/', methods=['GET'])
 def hello_world():
-    return 'Hello, world!\n'
+    return 'Hello, mom!\n'
 
 @app.route('/animals/head/<head>', methods=['GET'])
 def get_head(head):

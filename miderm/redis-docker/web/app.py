@@ -1,11 +1,14 @@
 import json
+import redis
 from flask import Flask
+
+rd = redis.StrictRedis(host='redis', port = 6379, db=0)
 
 app = Flask(__name__)
 
 @app.route('/', methods=['GET'])
 def hello_world():
-    return 'Hello, world!\n'
+    return 'Hello, worlds!\n'
 
 @app.route('/animals/head/<head>', methods=['GET'])
 def get_head(head):
@@ -13,7 +16,7 @@ def get_head(head):
 
 @app.route('/animals', methods=['get'])
 def get_animals():
-	return json.dumps(get_data())
+	return get_data()
 
 @app.route('/animals/legs/<num>', methods=['get'])
 def get_legs(num):
