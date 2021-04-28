@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: hello-deploy
+  labels:
+    greeting: "personalized"
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+        app: hello-app
+  template:
+    metadata:
+      labels:
+        app: hello-app
+    spec:
+      containers:
+        - name: hello
+          image: ubuntu:18.04
+          command: ['sh', '-c', 'echo "Hello, $NAME from $POD_IP" && sleep 3600']
+          env:
+            - name: NAME
+              value: "Michael"
+            - name: POD_IP
+              valueFrom:
+                fieldRef:
+                  fieldPath: status.podIP
