@@ -1,58 +1,169 @@
 import json
+import random
+import petname
+import uuid
+import datetime
 import redis
-from flask import Flask
-import generate_animals
-
-rd = redis.StrictRedis(host='redis', port = 6404, db=0)
+import flask
+from flask import Flask, request
 
 app = Flask(__name__)
 
-@app.route('/generate', methods=['GET'])
-def generate():
-	return generate_animals()	
+@app.route('/reset', methods=['GET'])
+def reset():
+    generate_animals()
+    return 'Animals reset\n'    
 
 @app.route('/', methods=['GET'])
 def hello_world():
     return 'Hello, world!\n'
 
-@app.route('/animals/head/<head>', methods=['GET'])
-def get_head(head):
-    return json.dumps(read_head(head))
+@app.route('/dates', methods=['GET'])
+def get_dates():
+    rd = redis.StrictRedis(host='redis', port = 6379, db=0)
+    check()
+    start = request.args.get('start')
+    startdate = datetime.datetime.strptime(start, '%Y-%m-%d')
+    end = request.args.get('end')
+    enddate = datetime.datetime.strptime(end, '%Y-%m-%d')
+    data = json.loads(rd.get('k1'))['animals']
+    return_data = {}
+    return_data['animals'] = []
+    for x in data:
+        if (datetime.datetime.strptime(x['created_on'], '%Y-%m-%d') >= startdate and datetime.datetime.strptime(x['created_on'], '%Y-%m-%d')<= enddate):
+            return_data['animals'].append(x)
+    return json.dumps(return_data)
+
+@app.route('/length', methods=['GET'])
+def length():
+    rd = redis.StrictRedis(host='redis', port = 6379, db=0)
+    check()
+    data = json.loads(rd.get('k1'))['animals']
+    return str(len(data))
+
+@app.route('/average', methods=['GET'])
+def average():
+    rd = redis.StrictRedis(host='redis', port = 6379, db=0)
+    check()
+    data = json.loads(rd.get('k1'))['animals']
+    i = 0
+    q = 0
+    for x in data:
+        q = q+1
+        i = i+x['legs']
+    average = i/q 
+    return str(average)
+
+@app.route('/deletedates', methods=['GET'])
+def delete_dates():
+    rd = redis.StrictRedis(host='redis', port = 6379, db=0)
+    check()
+    start = request.args.get('start')
+    startdate = datetime.datetime.strptime(start, '%Y-%m-%d')
+    end = request.args.get('end')
+    enddate = datetime.datetime.strptime(end, '%Y-%m-%d')
+    data = json.loads(rd.get('k1'))['animals']
+    return_data = {}
+    return_data['animals'] = []
+    for x in data:
+        if (datetime.datetime.strptime(x['created_on'], '%Y-%m-%d') < startdate and datetime.datetime.strptime(x['created_on'], '%Y-%m-%d') > enddate):
+            return_data['animals'].append(x)
+        else:
+            print('delete hit')
+    for key in rd.keys():
+        print('key updated')
+        rd.delete(key)
+    rd.set('k1', json.dumps(return_data))
+    print(json.loads(rd.get('k1')))
+    return 'Keys deleted\n'
+
+@app.route('/uuid', methods=['GET'])
+def get_uuid():
+    check()
+    uuid = request.args.get('uuid')
+    return_data = return_by_uuid(uuid)
+    return json.dumps(return_data)
+
+@app.route('/update', methods=['GET'])
+def update():
+    rd = redis.StrictRedis(host='redis', port = 6379, db=0)
+    uuid = request.args.get('uuid')
+    head = request.args.get('head')
+    body = request.args.get('body')
+    arms = request.args.get('arms')
+    legs = request.args.get('legs')
+    tail = request.args.get('tail')
+    data = json.loads(rd.get('k1'))['animals']
+    for x in data:
+        if(x['uid'] == uuid):
+            if(head != None):
+                x['head'] = head
+            if(body != None):
+                x['body'] = body
+            if(arms != None):
+                x['arms'] = arms
+            if(legs != None):
+                x['legs'] = legs
+            if(tail != None):
+                x['tail'] = tail
+            return_data = {}
+            return_data['animals'] = data
+            for key in rd.keys():
+                print('key updated')
+                rd.delete(key)
+            rd.set('k1', json.dumps(return_data))
+            return x
+    return 'UUID not found\n'
 
 @app.route('/animals', methods=['get'])
 def get_animals():
-	return get_data()
+    return get_data()
 
 @app.route('/animals/legs/<num>', methods=['get'])
 def get_legs(num):
-	return json.dumps(read_legs(num))
+    return json.dumps(read_legs(num))
 
-def read_legs(num):
-	with open("animals.json", "r") as json_file:
-		animal_list = json.load(json_file)
-	data = {}
-	data['animals'] = []
-	for i in animal_list['animals']:
-		if(str(i['legs']) == num):
-			print(i)
-			data['animals'].append(i)
-	return data
 
-def read_head(head_shape):
-	with open("animals.json", "r") as json_file:
-		animal_list = json.load(json_file)
+def return_by_uuid(uid):
+    rd = redis.StrictRedis(host='redis', port = 6379, db=0)
+    uuid = request.args.get('uuid')
+    data = json.loads(rd.get('k1'))['animals']
+    return_data = {}
+    return_data['animals'] = []
+    for x in data:
+        if(x['uid'] == uuid):
+            return_data['animals'].append(x)
+    return return_data
 
-	data = {}
-	data['animals'] = []
-	for i in animal_list['animals']:
-		if(i['head'] == head_shape):
-			data['animals'].append(i)
-	return data
 
-def get_data():	   
-	with open("animals.json", "r") as json_file:
-		userdata = json.load(json_file)
-	return userdata
+def generate_animals():
+    print("Generate hit")
+    rd = redis.StrictRedis(host='redis', port = 6379, db=0)
+    headList = ['snake', 'bull', 'lion', 'raven','bunny']
+    for key in rd.keys():
+        print('key deleted')
+        rd.delete(key)
+    data = {}
+    data['animals'] = []
+    for x in range(20):
+        print("Loop hit")
+        data['animals'].append( {'created_on' : '{:%Y-%m-%d}'.format(datetime.datetime.now()),
+                                 'uid' : str(uuid.uuid4()),
+                                 'head' : headList[random.randint(0,4)],
+                                 'body' : random.choice(petname.names) + '-' + random.choice(petname.names),
+                                 'arms' : (random.randint(1,5)*2),
+                                 'legs' : (random.randint(1,4)*3),
+                                 'tail' : []  } )
+        data['animals'][x]['tail'] = data['animals'][x]['arms'] + data['animals'][x]['legs']
+    rd.set('k1', json.dumps(data))
+    return
+
+def check():
+    rd = redis.StrictRedis(host='redis', port = 6379, db=0)
+    if rd.keys() == []:
+        generate_animals()
+    print('List Checked')
+    return
 
 if  __name__=='__main__':
-	app.run(debug=True, host='0.0.0.0')
+    app.run(debug=True, host='0.0.0.0')
