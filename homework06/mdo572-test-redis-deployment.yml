@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mdo572-test-redis-deployment
+  labels:
+    username: mdo572
+    env: test
+    app: mdo572-test-redis
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      username: mdo572
+      env: test
+      app: mdo572-test-redis
+  template:
+    metadata:
+      labels:
+        username: mdo572
+        env: test
+        app: mdo572-test-redis
+    spec:
+      containers:
+        - name: mdo572-test-pvc-container
+          image: redis:5.0.0
+          command: [redis-server]
+          ports:
+            - name: http
+              containerPort: 6379
+          volumeMounts:
+          - name: mdo572-test-pvc
+            mountPath: "/data"
+      volumes:
+      - name: mdo572-test-pvc
+        persistentVolumeClaim:
+          claimName: mdo572-test-pvc

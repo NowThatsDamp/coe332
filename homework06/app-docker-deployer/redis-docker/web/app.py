@@ -5,11 +5,15 @@ import uuid
 import datetime
 import redis
 import flask
+import os
 from flask import Flask, request
 
 app = Flask(__name__)
 
-rd = redis.StrictRedis(host='redis', port = 6379, db=0)
+redis_ip = os.environ.get('REDIS_IP')
+if not redis_ip:
+    raise Exception()
+rd=redis.StrictRedis(host=redis_ip, port=6379, db=0)
 
 @app.route('/reset', methods=['GET'])
 def reset():

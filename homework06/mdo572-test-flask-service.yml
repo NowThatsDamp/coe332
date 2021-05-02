@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: mdo572-test-flask-service
+  labels:
+    username: mdo572
+    env: test
+spec:
+  type: ClusterIP
+  selector:
+    app: mdo572-test-flask
+  ports:
+  - name: mdo572-test-flask
+    port: 5000
+    targetPort: 5000
