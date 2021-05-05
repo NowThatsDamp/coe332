@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mdo572-hw7-worker
+  labels:
+    app: mdo572-hw7-worker
+    usernmae: mdo572
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mdo572-hw7-worker
+  template:
+    metadata:
+      labels:
+        app: mdo572-hw7-worker
+    spec:
+      containers:
+        - name: mdo572-hw7-worker
+          imagePullPolicy: Always
+          image: nowthatsdamp/hw7:1.1          
+          command: ["python", "worker.py"]
+          env:
+          - name: REDIS_IP
+            value: "10.109.72.116"
+          - name: POD_IP
+            valueFrom:
+              fieldRef:
+                fieldPath: status.podIP
+
+
