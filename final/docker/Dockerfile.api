@@ -1,0 +1,13 @@
+FROM python:3.6.13
+
+RUN pip3 install Flask==1.1.2 \
+                 redis \
+                 uuid \
+				 hotqueue \
+				 pandas 
+
+COPY ./source/api.py /app/
+COPY ./source/jobs.py /app/
+WORKDIR /app
+
+CMD ["python", "/app/api.py"]

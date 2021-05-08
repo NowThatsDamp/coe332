@@ -1,0 +1,34 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mdo572-final-flask-deployment
+  labels:
+    username: mdo572
+    env: prod
+    app: mdo572-final-flask
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      username: mdo572
+      env: prod
+      app: mdo572-final-flask
+  template:
+    metadata:
+      labels:
+        username: mdo572
+        env: prod
+        app: mdo572-final-flask
+    spec:
+      containers:
+        - name: mdo572-final-flask
+          imagePullPolicy: Always
+          image: nowthatsdamp/final-api:1.0
+          env:
+          - name: FLASK_APP
+            value: "api.py"
+          - name: REDIS_IP
+            value: "10.103.143.2"
+          ports:
+          - name: http
+            containerPort: 5000

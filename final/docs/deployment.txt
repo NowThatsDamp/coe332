@@ -1,0 +1,24 @@
+To deploy the cluster, start services in this order:
+
+1.) Persistent Volume Claim
+    - kubectl apply -f mdo572-final-PVC.yml
+2.) Redis Service
+    - kubectl apply -f mdo572-final-redis-service.yml
+3.) Redis Deployment
+    - kubectl apply -f mdo572-final-redis.yml
+4.) Flask Service
+    - kubectl apply -f mdo572-final-flask-service.yml 
+
+At this point, ensure that the spec.template.spec.containers.env.name:value feild in mdo572-final-flask.yml is set to the IP address of your redis service.
+Your redis service IP address can be found using the command 'kubectl get services'
+
+5.) Flask Deployment
+    - kubectl apply -f mdo572-final-flask.yml
+        - I could not get this to work. It worked fine for HW7. The logs were giving me this error:
+        Fatal error, can't open config file '/data/redis.conf': No such file or directory
+        Not only is the directory there, but I'm not sure why the flask app is trying to connect it. I cannot find anywhere in the kubernetes or docker files
+		to change that parameter. I need to move on though
+6.) Worker deployment
+	Make sure this redis IP matches too
+
+	

@@ -1,0 +1,16 @@
+FROM python:3.6.13
+
+RUN pip3 install Flask==1.1.2 \
+                 hotqueue==0.2.8 \
+                 redis==3.5.3 \
+				 pandas \
+				 numpy \
+				 matplotlib 
+
+
+COPY ./source/worker.py /app/
+COPY ./source/jobs.py /app/
+WORKDIR /app
+
+CMD ["python", "/app/worker.py"]i
+

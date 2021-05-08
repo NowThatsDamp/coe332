@@ -1,0 +1,22 @@
+This app allows you to pull fuel cost data from Austin Data Services and plot it year by year.
+
+Routes:
+/
+	- Hello World
+
+/clear_jobs
+	- Clears the job database
+
+/download_data
+	- Downloads the data from austin.gov; You must run this route before making a chart
+
+/download/<jobid>
+	- Downloads a finished chart from the server after a job is ran. You must run a job before using this route.
+
+/add_data
+	- Allows you to add your own data in descrete year:cost pairs. Curl template:
+		- curl -X POST -H "content-type: application/json" -d '{"year": <data_year>, "cost": <fuel_cost>}' <flask_service_IP:5000/add_data
+
+/run
+	- Runs a job to make a chart. You must run /download_data before running this route.  Curl template:
+		- curl -X POST -H "content-type: application/json" -d '{"start": "2001", "end": "2021"}' <flask_service_IP>:5000/run
